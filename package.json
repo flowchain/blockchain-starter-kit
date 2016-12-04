@@ -1,0 +1,13 @@
+{
+  "name": "blockchain-starter-kit",
+  "version": "0.0.1",
+  "dependencies": {
+    "merkle": "^0.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "author": "jollen",
+  "engines": {
+    "node": "4.4"
+  }
+}
