@@ -1,4 +1,5 @@
-Project template for starting a Blockchain with Node.js 4+ and JavaScript.
+
+Project template to create as simple as possible implementation of a blockchain with Node.js 4+ and JavaScript.
 
 # Blockchain Starter Kit
 
