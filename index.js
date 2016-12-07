@@ -1,7 +1,7 @@
 /*
  * 建立 Genesis Block
  */
-var genesisBlock = require('./src/genesis');
+var genesisBlock = require('./libs/genesis');
 
 /*
  * 建立新的 Merkle Tree

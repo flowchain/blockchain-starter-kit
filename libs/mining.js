@@ -1,11 +1,11 @@
-var Block = require('./src/block');
 var crypto = require('crypto');
 var merkle = require('merkle');
 var merkleRoot = merkle('sha256');
 
-var secret = 'blockchain developer';
+// Secret
+var secret = 'Dummy Blockchain';
 
-// 建立一筆新的交易紀錄
+// Unverified pool
 var tx = ['Created by Jollen'];
 
 merkleRoot.async(tx, function(err, tree){
@@ -20,13 +20,13 @@ merkleRoot.async(tx, function(err, tree){
 			merkleRoot: hashMerkleRoot
 	    };
 
-		var hash1 = crypto.createHmac('sha256', JSON.stringify(header))
-		                   //.update(JSON.stringify(header))
-		                   .digest('hex');
+		var hash1 = crypto.createHmac('sha256', secret)
+							.update( JSON.stringify(header) )
+							.digest('hex');
 
 		var hash2 = crypto.createHmac('sha256', hash1)
-		                   //.update(hash1)
-		                   .digest('hex');
+							.update('powered by flowchain')
+							.digest('hex');
 
 		return hash2;
     };
@@ -34,10 +34,9 @@ merkleRoot.async(tx, function(err, tree){
     while (1) {
     	var id = hash(nonce++);
     	console.log(nonce + ': ' + id);
-		if (id < '00000ff4cb000000000000000000000000000000000000000000000000000000') {
+		if (id < '0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF') {
 			console.log('success: ' + id);
 			break;
 		}
     }
 });
-
