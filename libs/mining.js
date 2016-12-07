@@ -1,42 +1,122 @@
+/**
+ *
+ * The MIT License (MIT)
+ *
+ * http://block0.org
+ *
+ * Copyright (c) 2016-present Jollen
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
+'use strict';
+
 var crypto = require('crypto');
 var merkle = require('merkle');
 var merkleRoot = merkle('sha256');
 
-// Secret
-var secret = 'Dummy Blockchain';
+function Miner() {
+    // Transactions to be mined.
+    this.txs = [];
 
-// Unverified pool
-var tx = ['Created by Jollen'];
+    // Previous block.
+    this.previousBlock = {};
 
-merkleRoot.async(tx, function(err, tree){
-    // Merkle Root 的 Hash
-    var hashMerkleRoot = tree.level(0)[0];
-    var nonce = 0;
+    // New block.
+    this.newBlock = {};
 
-    var hash = function(nonce) {
-	    var header = {
-			nonce: nonce,
-			previousHash: 'dd0e2b79d79be0dfca96b4ad9ac85600097506f06f52bb74f769e02fcc66dec6',
-			merkleRoot: hashMerkleRoot
-	    };
+    // Secret
+    this.secret = 'Block0';
 
-		var hash1 = crypto.createHmac('sha256', secret)
-							.update( JSON.stringify(header) )
-							.digest('hex');
+    // is success
+    this._success = false;
 
-		var hash2 = crypto.createHmac('sha256', hash1)
-							.update('powered by flowchain')
-							.digest('hex');
+    // Merkle tree
+    this._tree = [];
+}
 
-		return hash2;
+Miner.prototype.setTransactions = function(txs) {
+    this.txs = txs;
+
+    this._tree = merkleRoot.sync(this.txs);
+    this.newBlock.merkleRoot = this._tree.level(0)[0];
+};
+
+Miner.prototype.setPreviousBlock = function(block) {
+    this.previousBlock = block;
+
+    this.newBlock.previousHash = this.previousBlock.hash;
+    this.newBlock.nonce = this.previousBlock.nonce + 1;
+    this.newBlock.difficulty = this.previousBlock.difficulty;
+    this.newBlock.no = this.previousBlock.no + 1;
+};
+
+Miner.prototype.generateHash = function() {
+    // The header of the new block.
+    var header = {
+        nonce: this.newBlock.nonce,
+        previousHash: this.newBlock.previousHash,
+        merkleRoot: this.newBlock.merkleRoot
     };
 
-    while (1) {
-    	var id = hash(nonce++);
-    	console.log(nonce + ': ' + id);
-		if (id < '0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF') {
-			console.log('success: ' + id);
-			break;
-		}
+    var hash = crypto.createHmac('sha256', this.secret)
+                        .update( JSON.stringify(header) )
+                        .digest('hex');
+
+    this.newBlock.hash = crypto.createHmac('sha256', hash)
+                        .update('powered by flowchain')
+                        .digest('hex');
+
+    this.newBlock.nonce++;
+    this._success = ( this.newBlock.hash < this.newBlock.difficulty );
+
+    return this.newBlock.hash;
+};
+
+
+Miner.prototype.isSuccess = function() {
+    return this._success;
+};
+
+Miner.prototype.getNewBlock = function() {
+    if (this._success === true) {
+        this._fixDifficulty();
+        return this.newBlock;
     }
-});
+    return null;
+};
+
+Miner.prototype.getNonce = function() {
+    return this.newBlock.nonce;
+};
+
+
+/**
+ * The new difficulty
+ */
+Miner.prototype._fixDifficulty = function() {
+    var key = this.previousBlock.difficulty;
+    var index = key.length;
+
+    key = '0' + key.slice(0, index - 1);
+    this.newBlock.difficulty = key;
+};
+
+module.exports = Miner;
