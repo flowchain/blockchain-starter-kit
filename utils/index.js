@@ -4,7 +4,7 @@
  *
  * http://block0.org
  *
- * Copyright (c) 2016-present Jollen
+ * Copyright (c) 2016 Jollen
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,23 @@
 
 'use strict';
 
-function Block(block) {
-	this.hash = block.hash || '';
-	this.previousHash = block.previousHash || '';
-	this.timestamp = block.timestamp || new Date();
-	this.merkleRoot = block.merkleRoot || '0000000000000000000000000000000000000000000000000000000000000000';
-    this.difficulty = block.difficulty || '00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
-    this.nonce = block.nonce || 0;
-    this.no = block.no || 0;
-}
+var Utils = {
+	DebugVerbose: true,
 
-module.exports = Block;
+	/**
+	 * Generate a hash key by SHA1. The key is used as identifier (ID) of each node.
+	 *
+	 * @param {String} text
+	 * @return {String}
+	 */
+	hash: function(text) {
+		var data = ('CHORD..++' + text + new Date() + Math.floor(Math.random()*999999));
+		var Crypto = require('crypto');
+		var key = Crypto.createHash('sha1').update(data).digest('hex');
+
+		return key;
+	},
+};
+
+if (typeof(module) != "undefined" && typeof(exports) != "undefined")
+  module.exports = Utils;

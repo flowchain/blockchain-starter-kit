@@ -28,14 +28,38 @@
 
 'use strict';
 
-function Block(block) {
-	this.hash = block.hash || '';
-	this.previousHash = block.previousHash || '';
-	this.timestamp = block.timestamp || new Date();
-	this.merkleRoot = block.merkleRoot || '0000000000000000000000000000000000000000000000000000000000000000';
-    this.difficulty = block.difficulty || '00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
-    this.nonce = block.nonce || 0;
-    this.no = block.no || 0;
-}
+var Handlers = Handlers || {};
 
-module.exports = Block;
+// Handlers object
+Handlers = {
+  receive: function(pathname, connection, clients) {
+    // the original sender pathname
+    connection.pathname = pathname;
+
+    /*
+     * convert sender pathname to viewer pathname
+     * eg. '/object/mbedtaiwan/send' to '/object/mbedtaiwan/viewer'
+     */
+    var paths = pathname.split('/');
+
+    // remove the rear string 'send'
+    var viewer = paths.slice(0, -1).join('/');
+
+    connection.viewer = viewer + '/viewer';
+    connection.statusViewer = viewer + '/status';
+
+    /*
+     * initial storage for this viewer
+     */
+    for (var path in clients) {
+        if (path === connection.viewer)
+            return;
+    }
+
+    clients[connection.viewer] = [];
+    clients[connection.statusViewer] = [];
+  }
+};
+
+if (typeof(module) != "undefined" && typeof(exports) != "undefined")
+  module.exports = Handlers;

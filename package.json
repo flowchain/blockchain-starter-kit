@@ -2,7 +2,10 @@
   "name": "blockchain-starter-kit",
   "version": "0.0.1",
   "dependencies": {
-    "merkle": "^0.5.1"
+    "merkle": "^0.5.1",
+    "utils-merge": "^1.0.0",
+    "uuid": "^3.0.1",
+    "websocket": "^1.0.23"
   },
   "devDependencies": {},
   "scripts": {},

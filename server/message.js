@@ -28,14 +28,15 @@
 
 'use strict';
 
-function Block(block) {
-	this.hash = block.hash || '';
-	this.previousHash = block.previousHash || '';
-	this.timestamp = block.timestamp || new Date();
-	this.merkleRoot = block.merkleRoot || '0000000000000000000000000000000000000000000000000000000000000000';
-    this.difficulty = block.difficulty || '00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
-    this.nonce = block.nonce || 0;
-    this.no = block.no || 0;
-}
+// RPC protocols
+var RPCMessage = {
+    FIND_SUCCESSOR:     0,
+    FOUND_SUCCESSOR:    1,
+    MESSAGE:            5
+};
 
-module.exports = Block;
+/*
+ * Export 'Node' class
+ */
+if (typeof(module) != "undefined" && typeof(exports) != "undefined")
+  module.exports = RPCMessage;

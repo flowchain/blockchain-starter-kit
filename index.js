@@ -1,26 +1,38 @@
-/*
- * 建立 Genesis Block
- */
-var genesisBlock = require('./libs/genesis');
+var server = require('./server');
+var Miner = require('./libs/mining');
 
-/*
- * 建立新的 Merkle Tree
- */
-var merkle = require('merkle');
-var merkleRoot = merkle('sha256');
+var onmessage = function(payload) {
+};
 
-// 建立一筆新的交易紀錄
-var tx = ['Created by Jollen'];
+var onstart = function(node) {
+    var block = require('./libs/genesis');
 
-merkleRoot.async(tx, function(err, tree){
-    // 取得 Merkle Root 的 Hash
-    genesisBlock.merkleRoot = tree.level(0)[0];
+    console.log('----- Genesis Block -----');
+    console.log( JSON.stringify(block) );
 
-    // 印出所有的 Hashes
-    for (i = 0; i < tree.levels(); i++) {
-        console.log( tree.level(i) );
+    console.log('----- Start mining -----');
+    var miner = new Miner();
+
+    miner.setTransactions(['a', 'b', 'c']);
+    miner.setPreviousBlock(block);
+
+    while (1) {
+        miner.generateHash();
+
+        if (miner.isSuccess()) {
+            block = miner.getNewBlock();
+            miner.setPreviousBlock(block);
+
+            console.log('Difficulty: ' + block.difficulty)
+            console.log('Block #' + block.no + ': ' + block.hash);
+        }
     }
+};
 
-    // 印出 Genesis Block 內容
-    console.log(genesisBlock);
+/**
+ * Create a mining node.
+ */
+server.start({
+    onstart: onstart,
+	onmessage: onmessage,
 });
