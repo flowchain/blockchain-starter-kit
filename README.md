@@ -2,7 +2,7 @@ Project template for starting a Blockchain with Node.js 4+ and JavaScript.
 
 # Blockchain Starter Kit
 
-儘可能簡單的區塊鏈實作專案。
+極簡區塊鏈：極儘所能、打造簡單的區塊鏈系統。
 
 Block #0 又稱為 Genesis Block，它是任何區塊鏈系統的第一個區塊。本專案提供一個極簡的區塊鏈實作，目的是用作教學與研究，你可以用最簡單的方式，了解區塊鏈。
 
