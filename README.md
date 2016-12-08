@@ -1,4 +1,6 @@
 
+<img src="http://block0.org/images/block0.org.jpg" />
+
 Project template to create as simple as possible implementation of a blockchain with Node.js 4+ and JavaScript.
 
 # Blockchain Starter Kit
