@@ -31,6 +31,7 @@
 var crypto = require('crypto');
 var merkle = require('merkle');
 var merkleRoot = merkle('sha256');
+var Block = require('./block');
 
 function Miner() {
     // Transactions to be mined.
@@ -40,7 +41,7 @@ function Miner() {
     this.previousBlock = {};
 
     // New block.
-    this.newBlock = {};
+    this.newBlock = new Block();
 
     // Secret
     this.secret = 'Block0';
@@ -85,7 +86,7 @@ Miner.prototype.generateHash = function() {
                         .update('powered by flowchain')
                         .digest('hex');
     
-    //console.log('> ' + this.newBlock.hash);
+    //console.log(this.newBlock.nonce + '> ' + this.newBlock.hash);
 
     this.newBlock.nonce++;
     this._success = ( this.newBlock.hash < this.newBlock.difficulty );

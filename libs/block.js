@@ -29,6 +29,10 @@
 'use strict';
 
 function Block(block) {
+	if (typeof block === 'undefined') {
+		block = {};
+	}
+	
 	this.hash = block.hash || '';
 	this.previousHash = block.previousHash || '';
 	this.timestamp = block.timestamp || new Date();
