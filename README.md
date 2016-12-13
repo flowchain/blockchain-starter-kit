@@ -29,11 +29,24 @@ npm install
 node index.js
 ```
 
-To start a mining node and join an existing network:
+The server will start at ```localhost:8000``` by default. To start a new miner node at port ```8001``` and join an existing network:
 
 ```
 export PORT=8001
 node node1.js
+```
+
+After ```index.js``` has been joined, its _successor_ will become ```node1.js```. To fix the default join node, please open ```node1.js``` and modify the ```join``` property:
+
+```
+server.start({
+    onstart: onstart,
+	onmessage: onmessage,
+	join: {
+		address: 'localhost',
+		port: 8000
+	}
+});
 ```
 
 ## License

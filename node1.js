@@ -7,7 +7,7 @@ var onstart = function(node) {
 };
 
 /**
- * Create a mining node and join a peer node.
+ * Create a new miner node and join a peer node.
  */
 server.start({
     onstart: onstart,
