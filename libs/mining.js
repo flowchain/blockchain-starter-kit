@@ -73,7 +73,8 @@ Miner.prototype.generateHash = function() {
     var header = {
         nonce: this.newBlock.nonce,
         previousHash: this.newBlock.previousHash,
-        merkleRoot: this.newBlock.merkleRoot
+        merkleRoot: this.newBlock.merkleRoot,
+        timestamp: this.newBlock.timestamp
     };
 
     var hash = crypto.createHmac('sha256', this.secret)
@@ -83,6 +84,8 @@ Miner.prototype.generateHash = function() {
     this.newBlock.hash = crypto.createHmac('sha256', hash)
                         .update('powered by flowchain')
                         .digest('hex');
+    
+    //console.log('> ' + this.newBlock.hash);
 
     this.newBlock.nonce++;
     this._success = ( this.newBlock.hash < this.newBlock.difficulty );

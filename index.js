@@ -16,7 +16,7 @@ var onstart = function(node) {
     miner.setTransactions(['a', 'b', 'c']);
     miner.setPreviousBlock(block);
 
-    while (1) {
+    setTimeout(function(){
         miner.generateHash();
 
         if (miner.isSuccess()) {
@@ -25,8 +25,8 @@ var onstart = function(node) {
 
             console.log('Difficulty: ' + block.difficulty)
             console.log('Block #' + block.no + ': ' + block.hash);
-        }
-    }
+        }        
+    }, 100);
 };
 
 /**
