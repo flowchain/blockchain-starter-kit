@@ -20,7 +20,7 @@ Block # 0, also known as Genesis Block, is the first block of its blockchain sys
 
 ## Testing
 
-To start a mining node:
+To start a miner node:
 
 ```
 git clone https://github.com/jollen/blockchain-starter-kit.git
@@ -29,7 +29,7 @@ npm install
 node index.js
 ```
 
-The server will start at ```localhost:8000``` by default. To start a new miner node at port ```8001``` and join an existing network:
+The server will start at ```localhost:8000``` by default. To start another miner node at port ```8001``` and join an existing network:
 
 ```
 export PORT=8001
