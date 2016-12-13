@@ -10,7 +10,7 @@ Extremely simple block chain: a project template to create as simple as possible
 
 Block # 0, also known as Genesis Block, is the first block of its blockchain system. This project provides a minimal blockchain implementation for teaching and research, and you can be provided the simplest way to understand the blockchain.
 
-## 主要特色
+## Features
 
 * Import _Genesis Block_
 * An exetremly simple mining algorithm
