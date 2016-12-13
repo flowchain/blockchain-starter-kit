@@ -6,7 +6,7 @@ Project template to create as simple as possible implementation of a blockchain 
 
 # Blockchain Starter Kit
 
-Extremely simple block chain: a project template to create as simple as possible blockchain system.
+An extremely simple blockchain: a project template to create as simple as possible blockchain system.
 
 Block # 0, also known as Genesis Block, is the first block of its blockchain system. This project provides a minimal blockchain implementation for teaching and research, and you can be provided the simplest way to understand the blockchain.
 
