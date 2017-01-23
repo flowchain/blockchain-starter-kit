@@ -27,6 +27,10 @@ Block #0 又稱為 Genesis Block，它是任何區塊鏈系統的第一個區塊
 <li>Lesson 5: <a href="http://www.jollen.org/blog/2016/12/blockchain-developer-how-mining.html">Blockchain Developer - 簡單易懂的 Mining 演算法設計</a></li>
 </ul>
 
+### 教學視頻
+
+* [Block0.org](https://block0.org)
+
 ## Testing
 
 ```
