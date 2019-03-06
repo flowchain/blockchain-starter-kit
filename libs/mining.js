@@ -30,7 +30,6 @@
 
 var crypto = require('crypto');
 var merkle = require('merkle');
-var merkleRoot = merkle('sha256');
 var Block = require('./block');
 
 function Miner() {
@@ -50,14 +49,30 @@ function Miner() {
     this._success = false;
 
     // Merkle tree
-    this._tree = [];
+    this._tree = {};
 }
 
 Miner.prototype.setTransactions = function(txs) {
-    this.txs = txs;
+    var _ids = [];
+    for (var i = 0; i < txs.length; i++) {
+        this.txs.push( JSON.stringify(txs[i]) );
+        _ids.push(txs[i].txid);
+    }
 
-    this._tree = merkleRoot.sync(this.txs);
-    this.newBlock.merkleRoot = this._tree.level(0)[0];
+    var tree = merkle('sha256').sync(_ids);
+    this.newBlock.merkleRoot = tree.level(0)[0];
+
+    this.txs = [];
+    this._tree = tree;
+};
+
+Miner.prototype.dumpMerkleTree = function() {
+    var depth = this._tree.depth();
+    var nodes = this._tree.nodes();
+
+    console.log('------ Merkle Tree -------');
+    console.log('Nodes:', nodes);
+    console.log('merkleRoot:', this._tree.root());
 };
 
 Miner.prototype.setPreviousBlock = function(block) {

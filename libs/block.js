@@ -37,7 +37,7 @@ function Block(block) {
 	this.previousHash = block.previousHash || '';
 	this.timestamp = block.timestamp || new Date();
 	this.merkleRoot = block.merkleRoot || '0000000000000000000000000000000000000000000000000000000000000000';
-    this.difficulty = block.difficulty || '00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
+    this.difficulty = block.difficulty || '0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
     this.nonce = block.nonce || 0;
     this.no = block.no || 0;
 }
